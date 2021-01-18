@@ -612,6 +612,9 @@ class ArrayApplication(object):
             result_arrays.append(axis_result)
         return tuple(result_arrays)
 
+    def isnan(self, X: BlockArray):
+        return self.map_uop("isnan", X)
+
     def map_uop(self,
                 op_name: str,
                 arr: BlockArray,
