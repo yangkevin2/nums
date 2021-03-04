@@ -378,8 +378,7 @@ def std(a: BlockArray, axis=None, dtype=None, out=None, ddof=0, keepdims=False):
 
 
 def where(condition, x=None, y=None):
-    assert x is None and y is None, "x and y parameters not supported."
-    return _instance().where(condition)
+    return _instance().where(condition, x, y)
 
 
 def all(a: BlockArray, axis=None, out=None, keepdims=False):
@@ -400,8 +399,47 @@ def any(a: BlockArray, axis=None, out=None, keepdims=False):
     return _instance().reduce("any", a, axis=axis, keepdims=keepdims)
 
 ############################################
+# NaN Ops
+############################################
+
+
+def nanmax(a: BlockArray, axis=None, out=None, keepdims=False):
+    if out is not None:
+        raise NotImplementedError("'out' is currently not supported.")
+    return _instance().reduce("nanmax", a, axis=axis, keepdims=keepdims)
+
+
+def nanmin(a: BlockArray, axis=None, out=None, keepdims=False):
+    if out is not None:
+        raise NotImplementedError("'out' is currently not supported.")
+    return _instance().reduce("nanmin", a, axis=axis, keepdims=keepdims)
+
+
+def nansum(a: BlockArray, axis=None, dtype=None, out=None, keepdims=False):
+    if out is not None:
+        raise NotImplementedError("'out' is currently not supported.")
+    return _instance().reduce("nansum", a, axis=axis, dtype=dtype, keepdims=keepdims)
+
+
+def nanmean(a, axis=None, dtype=None, out=None, keepdims=False):
+    if out is not None:
+        raise NotImplementedError("'out' is currently not supported.")
+    return _instance().nanmean(a, axis=axis, dtype=dtype, keepdims=keepdims)
+
+
+############################################
 # Utility Ops
 ############################################
+
+
+def array_equal(a: BlockArray, b: BlockArray, equal_nan=False) -> BlockArray:
+    if equal_nan is not False:
+        raise NotImplementedError("equal_nan=True not supported.")
+    return _instance().array_equal(a, b)
+
+
+def array_equiv(a: BlockArray, b: BlockArray) -> BlockArray:
+    return _instance().array_equiv(a, b)
 
 
 def allclose(a: BlockArray, b: BlockArray, rtol=1.e-5, atol=1.e-8, equal_nan=False) -> BlockArray:
